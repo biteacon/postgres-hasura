@@ -56,7 +56,7 @@ create table likelib.accounts (
     address_in_base58           varchar(255)    not null,
     balance                     bigint,
     nonce                       int,
-    type                        varchar(255),
+    type                        int,
     primary key (address),
     foreign key (type) references likelib.account_types(key)
 );
