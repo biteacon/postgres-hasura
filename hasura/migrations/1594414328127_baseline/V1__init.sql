@@ -102,15 +102,10 @@ create index on likelib.transactions (address_to);
 create index on likelib.transactions (address_to_in_base58);
 create index on likelib.transactions (address_from);
 create index on likelib.transactions (address_from_in_base58);
-create index on likelib.transactions (data);
 create index on likelib.transactions (amount);
 create index on likelib.transactions (status);
-create index on likelib.transactions (sign);
-create index on likelib.transactions (sign_in_base64);
 create index on likelib.transactions (fee);
 create index on likelib.transactions (block_height);
-create index on likelib.transactions (message);
-create index on likelib.transactions (message_in_base64);
 
 create index on likelib.accounts (address);
 create index on likelib.accounts (address_in_base58);
