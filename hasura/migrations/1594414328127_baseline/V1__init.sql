@@ -95,7 +95,7 @@ create index on likelib.blocks (nonce);
 create index on likelib.blocks (prev_block_hash);
 create index on likelib.blocks (prev_block_hash_in_base64);
 
-create index on tlikelib.ransactions (hash);
+create index on likelib.transactions (hash);
 create index on likelib.transactions (hash_in_base64);
 create index on likelib.transactions (timestamp);
 create index on likelib.transactions (address_to);
