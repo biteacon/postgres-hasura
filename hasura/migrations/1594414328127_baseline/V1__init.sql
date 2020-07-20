@@ -1,29 +1,45 @@
-create table transactions_statuses (
+CREATE SCHEMA likelib;
+
+create table likelib.transaction_statuses (
     key                         int             not null,
     value                       varchar(255)    not null,
     primary key (key)
 );
 
-insert into transactions_statuses(key, value) values (0, 'Success');
-insert into transactions_statuses(key, value) values (1, 'Pending');
-insert into transactions_statuses(key, value) values (2, 'BadQueryForm');
-insert into transactions_statuses(key, value) values (3, 'BadSign');
-insert into transactions_statuses(key, value) values (4, 'NotEnoughBalance');
-insert into transactions_statuses(key, value) values (5, 'Revert');
-insert into transactions_statuses(key, value) values (6, 'Failed');
+insert into likelib.transaction_statuses(key, value) values (0, 'Success');
+insert into likelib.transaction_statuses(key, value) values (1, 'Pending');
+insert into likelib.transaction_statuses(key, value) values (2, 'BadQueryForm');
+insert into likelib.transaction_statuses(key, value) values (3, 'BadSign');
+insert into likelib.transaction_statuses(key, value) values (4, 'NotEnoughBalance');
+insert into likelib.transaction_statuses(key, value) values (5, 'Revert');
+insert into likelib.transaction_statuses(key, value) values (6, 'Failed');
 
-create table transactions_types (
+create table likelib.transaction_types (
     key                         int             not null,
     value                       varchar(255)    not null,
     primary key (key)
 );
 
-insert into transactions_types(key, value) values (0, 'None');
-insert into transactions_types(key, value) values (1, 'Transfer');
-insert into transactions_types(key, value) values (2, 'ContractCall');
-insert into transactions_types(key, value) values (3, 'ContractCreation');
+insert into likelib.transaction_types(key, value) values (0, 'None');
+insert into likelib.transaction_types(key, value) values (1, 'Transfer');
+insert into likelib.transaction_types(key, value) values (2, 'ContractCall');
+insert into likelib.transaction_types(key, value) values (3, 'ContractCreation');
 
-create table blocks (
+
+
+create table likelib.account_types (
+    key                         int             not null,
+    value                       varchar(255)    not null,
+    primary key (key)
+);
+
+insert into likelib.account_types(key, value) values (0, 'Client');
+insert into likelib.account_types(key, value) values (1, 'Contract');
+
+
+
+
+create table likelib.blocks (
     number                      bigint          not null,
     hash                        varchar(255)    not null,
     hash_in_base64              varchar(255)    not null,
@@ -35,16 +51,17 @@ create table blocks (
     primary key (number)
 );
 
-create table accounts (
+create table likelib.accounts (
     address                     varchar(255)    not null,
     address_in_base58           varchar(255)    not null,
     balance                     bigint,
     nonce                       int,
     type                        varchar(255),
-    primary key (address)
+    primary key (address),
+    foreign key (type) references likelib.account_types(key)
 );
 
-create table transactions (
+create table likelib.transactions (
     hash                        varchar(255)    not null,
     hash_in_base64              varchar(255)    not null,
     timestamp                   timestamp,
@@ -63,41 +80,41 @@ create table transactions (
     message                     varchar(500),
     message_in_base64           varchar(500),
     primary key (hash),
-    foreign key (address_to) references accounts(address),
-    foreign key (address_from) references accounts(address),
-    foreign key (status) references transactions_statuses(key),
-    foreign key (block_height) references blocks(number),
-    foreign key (type) references transactions_types(key)
+    foreign key (address_to) references likelib.accounts(address),
+    foreign key (address_from) references likelib.accounts(address),
+    foreign key (status) references likelib.transaction_statuses(key),
+    foreign key (block_height) references likelib.blocks(number),
+    foreign key (type) references likelib.transaction_types(key)
 );
 
-create index on blocks (number);
-create index on blocks (hash);
-create index on blocks (hash_in_base64);
-create index on blocks (timestamp);
-create index on blocks (nonce);
-create index on blocks (prev_block_hash);
-create index on blocks (prev_block_hash_in_base64);
+create index on likelib.blocks (number);
+create index on likelib.blocks (hash);
+create index on likelib.blocks (hash_in_base64);
+create index on likelib.blocks (timestamp);
+create index on likelib.blocks (nonce);
+create index on likelib.blocks (prev_block_hash);
+create index on likelib.blocks (prev_block_hash_in_base64);
 
-create index on transactions (hash);
-create index on transactions (hash_in_base64);
-create index on transactions (timestamp);
-create index on transactions (address_to);
-create index on transactions (address_to_in_base58);
-create index on transactions (address_from);
-create index on transactions (address_from_in_base58);
-create index on transactions (data);
-create index on transactions (amount);
-create index on transactions (status);
-create index on transactions (sign);
-create index on transactions (sign_in_base64);
-create index on transactions (fee);
-create index on transactions (block_height);
-create index on transactions (message);
-create index on transactions (message_in_base64);
+create index on tlikelib.ransactions (hash);
+create index on likelib.transactions (hash_in_base64);
+create index on likelib.transactions (timestamp);
+create index on likelib.transactions (address_to);
+create index on likelib.transactions (address_to_in_base58);
+create index on likelib.transactions (address_from);
+create index on likelib.transactions (address_from_in_base58);
+create index on likelib.transactions (data);
+create index on likelib.transactions (amount);
+create index on likelib.transactions (status);
+create index on likelib.transactions (sign);
+create index on likelib.transactions (sign_in_base64);
+create index on likelib.transactions (fee);
+create index on likelib.transactions (block_height);
+create index on likelib.transactions (message);
+create index on likelib.transactions (message_in_base64);
 
-create index on accounts (address);
-create index on accounts (address_in_base58);
-create index on accounts (balance);
-create index on accounts (nonce);
-create index on accounts (type);
+create index on likelib.accounts (address);
+create index on likelib.accounts (address_in_base58);
+create index on likelib.accounts (balance);
+create index on likelib.accounts (nonce);
+create index on likelib.accounts (type);
 
