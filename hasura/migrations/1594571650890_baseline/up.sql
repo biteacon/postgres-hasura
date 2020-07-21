@@ -5,18 +5,18 @@ CREATE TABLE likelib.account_types (
 CREATE TABLE likelib.accounts (
     address character varying(255) NOT NULL,
     address_in_base58 character varying(255) NOT NULL,
-    balance bigint,
-    nonce integer,
+    balance bigint NOT NULL,
+    nonce integer NOT NULL,
     type character varying(255) NOT NULL
 );
 CREATE TABLE likelib.blocks (
     number bigint NOT NULL,
     hash character varying(255) NOT NULL,
     hash_in_base64 character varying(255) NOT NULL,
-    "timestamp" timestamp without time zone,
-    nonce integer,
-    prev_block_hash character varying(255),
-    prev_block_hash_in_base64 character varying(255),
+    "timestamp" timestamp without time zone NOT NULL,
+    nonce integer NOT NULL,
+    prev_block_hash character varying(255) NOT NULL,
+    prev_block_hash_in_base64 character varying(255) NOT NULL,
     block_data_in_json character varying(5000) NOT NULL
 );
 CREATE TABLE likelib.transaction_statuses (
@@ -28,17 +28,17 @@ CREATE TABLE likelib.transaction_types (
 CREATE TABLE likelib.transactions (
     hash character varying(255) NOT NULL,
     hash_in_base64 character varying(255) NOT NULL,
-    "timestamp" timestamp without time zone,
-    address_to character varying(255),
-    address_to_in_base58 character varying(255),
-    address_from character varying(255),
-    address_from_in_base58 character varying(255),
+    "timestamp" timestamp without time zone NOT NULL,
+    address_to character varying(255) NOT NULL,
+    address_to_in_base58 character varying(255) NOT NULL,
+    address_from character varying(255) NOT NULL,
+    address_from_in_base58 character varying(255) NOT NULL,
     data bytea,
-    amount bigint,
-    sign character varying(500),
-    sign_in_base64 character varying(500),
-    fee bigint,
-    block_height bigint,
+    amount bigint NOT NULL,
+    sign character varying(500) NOT NULL,
+    sign_in_base64 character varying(500) NOT NULL,
+    fee bigint NOT NULL,
+    block_height bigint NOT NULL,
     message character varying(500),
     message_in_base64 character varying(500),
     status character varying(255) NOT NULL,
