@@ -16,8 +16,7 @@ CREATE TABLE likelib.blocks (
     "timestamp" timestamp without time zone NOT NULL,
     nonce integer NOT NULL,
     prev_block_hash character varying(255) NOT NULL,
-    prev_block_hash_in_base64 character varying(255) NOT NULL,
-    block_data_in_json character varying(5000) NOT NULL
+    prev_block_hash_in_base64 character varying(255) NOT NULL
 );
 CREATE TABLE likelib.transaction_statuses (
     status character varying(255) NOT NULL
@@ -56,6 +55,8 @@ ALTER TABLE ONLY likelib.blocks
     ADD CONSTRAINT blocks_hash_in_base64_key UNIQUE (hash_in_base64);
 ALTER TABLE ONLY likelib.blocks
     ADD CONSTRAINT blocks_hash_key UNIQUE (hash);
+ALTER TABLE ONLY likelib.blocks
+    ADD CONSTRAINT blocks_nonce_key UNIQUE (nonce);
 ALTER TABLE ONLY likelib.blocks
     ADD CONSTRAINT blocks_pkey PRIMARY KEY (height);
 ALTER TABLE ONLY likelib.blocks
