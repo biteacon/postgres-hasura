@@ -93,6 +93,8 @@ ALTER TABLE ONLY likelib.transactions
 ALTER TABLE ONLY likelib.transactions
     ADD CONSTRAINT transactions_address_to_fkey FOREIGN KEY (address_to) REFERENCES likelib.accounts(address);
 ALTER TABLE ONLY likelib.transactions
+    ADD CONSTRAINT transactions_block_height_fkey FOREIGN KEY (block_height) REFERENCES likelib.blocks(number) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY likelib.transactions
     ADD CONSTRAINT transactions_status_fkey FOREIGN KEY (status) REFERENCES likelib.transaction_statuses(value) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY likelib.transactions
     ADD CONSTRAINT transactions_type_fkey FOREIGN KEY (type) REFERENCES likelib.transaction_types(value) ON UPDATE RESTRICT ON DELETE RESTRICT;
