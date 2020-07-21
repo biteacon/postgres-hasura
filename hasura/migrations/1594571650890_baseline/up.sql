@@ -49,9 +49,21 @@ ALTER TABLE ONLY likelib.account_types
 ALTER TABLE ONLY likelib.account_types
     ADD CONSTRAINT account_types_value_key UNIQUE (value);
 ALTER TABLE ONLY likelib.accounts
+    ADD CONSTRAINT accounts_address_in_base58_key UNIQUE (address_in_base58);
+ALTER TABLE ONLY likelib.accounts
     ADD CONSTRAINT accounts_pkey PRIMARY KEY (address);
 ALTER TABLE ONLY likelib.blocks
+    ADD CONSTRAINT blocks_hash_in_base64_key UNIQUE (hash_in_base64);
+ALTER TABLE ONLY likelib.blocks
+    ADD CONSTRAINT blocks_hash_key UNIQUE (hash);
+ALTER TABLE ONLY likelib.blocks
     ADD CONSTRAINT blocks_pkey PRIMARY KEY (number);
+ALTER TABLE ONLY likelib.blocks
+    ADD CONSTRAINT blocks_prev_block_hash_in_base64_key UNIQUE (prev_block_hash_in_base64);
+ALTER TABLE ONLY likelib.blocks
+    ADD CONSTRAINT blocks_prev_block_hash_key UNIQUE (prev_block_hash);
+ALTER TABLE ONLY likelib.blocks
+    ADD CONSTRAINT blocks_timestamp_key UNIQUE ("timestamp");
 ALTER TABLE ONLY likelib.transaction_statuses
     ADD CONSTRAINT transaction_statuses_pkey PRIMARY KEY (value);
 ALTER TABLE ONLY likelib.transaction_statuses
@@ -60,6 +72,8 @@ ALTER TABLE ONLY likelib.transaction_types
     ADD CONSTRAINT transaction_types_pkey PRIMARY KEY (value);
 ALTER TABLE ONLY likelib.transaction_types
     ADD CONSTRAINT transaction_types_value_key UNIQUE (value);
+ALTER TABLE ONLY likelib.transactions
+    ADD CONSTRAINT transactions_hash_in_base64_key UNIQUE (hash_in_base64);
 ALTER TABLE ONLY likelib.transactions
     ADD CONSTRAINT transactions_pkey PRIMARY KEY (hash);
 CREATE INDEX accounts_address_idx ON likelib.accounts USING btree (address);
