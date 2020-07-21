@@ -1,6 +1,5 @@
 CREATE SCHEMA likelib;
 CREATE TABLE likelib.account_types (
-    key integer NOT NULL,
     value character varying(255) NOT NULL
 );
 CREATE TABLE likelib.accounts (
@@ -8,7 +7,7 @@ CREATE TABLE likelib.accounts (
     address_in_base58 character varying(255) NOT NULL,
     balance bigint,
     nonce integer,
-    type integer
+    type character varying(255) NOT NULL
 );
 CREATE TABLE likelib.blocks (
     number bigint NOT NULL,
@@ -21,11 +20,9 @@ CREATE TABLE likelib.blocks (
     block_data_in_json character varying(5000) NOT NULL
 );
 CREATE TABLE likelib.transaction_statuses (
-    key integer NOT NULL,
     value character varying(255) NOT NULL
 );
 CREATE TABLE likelib.transaction_types (
-    key integer NOT NULL,
     value character varying(255) NOT NULL
 );
 CREATE TABLE likelib.transactions (
@@ -38,25 +35,31 @@ CREATE TABLE likelib.transactions (
     address_from_in_base58 character varying(255),
     data bytea,
     amount bigint,
-    status integer,
     sign character varying(500),
     sign_in_base64 character varying(500),
     fee bigint,
     block_height bigint,
-    type integer,
     message character varying(500),
-    message_in_base64 character varying(500)
+    message_in_base64 character varying(500),
+    status character varying(255) NOT NULL,
+    type character varying(255) NOT NULL
 );
 ALTER TABLE ONLY likelib.account_types
-    ADD CONSTRAINT account_types_pkey PRIMARY KEY (key);
+    ADD CONSTRAINT account_types_pkey PRIMARY KEY (value);
+ALTER TABLE ONLY likelib.account_types
+    ADD CONSTRAINT account_types_value_key UNIQUE (value);
 ALTER TABLE ONLY likelib.accounts
     ADD CONSTRAINT accounts_pkey PRIMARY KEY (address);
 ALTER TABLE ONLY likelib.blocks
     ADD CONSTRAINT blocks_pkey PRIMARY KEY (number);
 ALTER TABLE ONLY likelib.transaction_statuses
-    ADD CONSTRAINT transaction_statuses_pkey PRIMARY KEY (key);
+    ADD CONSTRAINT transaction_statuses_pkey PRIMARY KEY (value);
+ALTER TABLE ONLY likelib.transaction_statuses
+    ADD CONSTRAINT transaction_statuses_value_key UNIQUE (value);
 ALTER TABLE ONLY likelib.transaction_types
-    ADD CONSTRAINT transaction_types_pkey PRIMARY KEY (key);
+    ADD CONSTRAINT transaction_types_pkey PRIMARY KEY (value);
+ALTER TABLE ONLY likelib.transaction_types
+    ADD CONSTRAINT transaction_types_value_key UNIQUE (value);
 ALTER TABLE ONLY likelib.transactions
     ADD CONSTRAINT transactions_pkey PRIMARY KEY (hash);
 CREATE INDEX accounts_address_idx ON likelib.accounts USING btree (address);
@@ -82,15 +85,14 @@ CREATE INDEX transactions_hash_idx ON likelib.transactions USING btree (hash);
 CREATE INDEX transactions_hash_in_base64_idx ON likelib.transactions USING btree (hash_in_base64);
 CREATE INDEX transactions_status_idx ON likelib.transactions USING btree (status);
 CREATE INDEX transactions_timestamp_idx ON likelib.transactions USING btree ("timestamp");
+CREATE INDEX transactions_type_idx ON likelib.transactions USING btree (type);
 ALTER TABLE ONLY likelib.accounts
-    ADD CONSTRAINT accounts_type_fkey FOREIGN KEY (type) REFERENCES likelib.account_types(key);
+    ADD CONSTRAINT accounts_type_fkey FOREIGN KEY (type) REFERENCES likelib.account_types(value) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY likelib.transactions
     ADD CONSTRAINT transactions_address_from_fkey FOREIGN KEY (address_from) REFERENCES likelib.accounts(address);
 ALTER TABLE ONLY likelib.transactions
     ADD CONSTRAINT transactions_address_to_fkey FOREIGN KEY (address_to) REFERENCES likelib.accounts(address);
 ALTER TABLE ONLY likelib.transactions
-    ADD CONSTRAINT transactions_block_height_fkey FOREIGN KEY (block_height) REFERENCES likelib.blocks(number);
+    ADD CONSTRAINT transactions_status_fkey FOREIGN KEY (status) REFERENCES likelib.transaction_statuses(value) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY likelib.transactions
-    ADD CONSTRAINT transactions_status_fkey FOREIGN KEY (status) REFERENCES likelib.transaction_statuses(key);
-ALTER TABLE ONLY likelib.transactions
-    ADD CONSTRAINT transactions_type_fkey FOREIGN KEY (type) REFERENCES likelib.transaction_types(key);
+    ADD CONSTRAINT transactions_type_fkey FOREIGN KEY (type) REFERENCES likelib.transaction_types(value) ON UPDATE RESTRICT ON DELETE RESTRICT;
