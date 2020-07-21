@@ -26,7 +26,7 @@ CREATE TABLE likelib.transactions (
     "timestamp" timestamp without time zone NOT NULL,
     account_to character varying(255) NOT NULL,
     account_from character varying(255) NOT NULL,
-    data bytea,
+    data character varying,
     amount bigint NOT NULL,
     sign character varying(500) NOT NULL,
     fee bigint NOT NULL,
