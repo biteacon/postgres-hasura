@@ -13,7 +13,8 @@ CREATE TABLE likelib.blocks (
     hash character varying(255) NOT NULL,
     "timestamp" timestamp without time zone NOT NULL,
     nonce integer NOT NULL,
-    prev_block_hash character varying(255) NOT NULL
+    prev_block_hash character varying(255) NOT NULL,
+    coinbase character varying(255) NOT NULL
 );
 CREATE TABLE likelib.transaction_statuses (
     status character varying(255) NOT NULL
@@ -59,6 +60,7 @@ CREATE INDEX accounts_address_idx ON likelib.accounts USING btree (address);
 CREATE INDEX accounts_balance_idx ON likelib.accounts USING btree (balance);
 CREATE INDEX accounts_nonce_idx ON likelib.accounts USING btree (nonce);
 CREATE INDEX accounts_type_idx ON likelib.accounts USING btree (type);
+CREATE INDEX blocks_coinbase_idx ON likelib.blocks USING btree (coinbase);
 CREATE INDEX blocks_hash_idx ON likelib.blocks USING btree (hash);
 CREATE INDEX blocks_nonce_idx ON likelib.blocks USING btree (nonce);
 CREATE INDEX blocks_number_idx ON likelib.blocks USING btree (height);
@@ -75,6 +77,8 @@ CREATE INDEX transactions_timestamp_idx ON likelib.transactions USING btree ("ti
 CREATE INDEX transactions_type_idx ON likelib.transactions USING btree (type);
 ALTER TABLE ONLY likelib.accounts
     ADD CONSTRAINT accounts_type_fkey FOREIGN KEY (type) REFERENCES likelib.account_types(type) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY likelib.blocks
+    ADD CONSTRAINT blocks_coinbase_fkey FOREIGN KEY (coinbase) REFERENCES likelib.accounts(address) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY likelib.transactions
     ADD CONSTRAINT transactions_address_from_fkey FOREIGN KEY (account_from) REFERENCES likelib.accounts(address);
 ALTER TABLE ONLY likelib.transactions
