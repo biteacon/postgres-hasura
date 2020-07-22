@@ -34,7 +34,8 @@ CREATE TABLE likelib.transactions (
     block_height bigint NOT NULL,
     message character varying(500),
     status character varying(255) NOT NULL,
-    type character varying(255) NOT NULL
+    type character varying(255) NOT NULL,
+    fee_left bigint NOT NULL
 );
 ALTER TABLE ONLY likelib.account_types
     ADD CONSTRAINT account_types_pkey PRIMARY KEY (type);
