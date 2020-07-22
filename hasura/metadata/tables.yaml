@@ -1,0 +1,96 @@
+- table:
+    schema: likelib
+    name: account_types
+  array_relationships:
+  - name: accounts
+    using:
+      foreign_key_constraint_on:
+        column: type
+        table:
+          schema: likelib
+          name: accounts
+- table:
+    schema: likelib
+    name: accounts
+  object_relationships:
+  - name: account_type
+    using:
+      foreign_key_constraint_on: type
+  array_relationships:
+  - name: blocks
+    using:
+      foreign_key_constraint_on:
+        column: coinbase
+        table:
+          schema: likelib
+          name: blocks
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: account_from
+        table:
+          schema: likelib
+          name: transactions
+  - name: transactionsByAccountTo
+    using:
+      foreign_key_constraint_on:
+        column: account_to
+        table:
+          schema: likelib
+          name: transactions
+- table:
+    schema: likelib
+    name: blocks
+  object_relationships:
+  - name: account
+    using:
+      foreign_key_constraint_on: coinbase
+  array_relationships:
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: block_height
+        table:
+          schema: likelib
+          name: transactions
+- table:
+    schema: likelib
+    name: transaction_statuses
+  array_relationships:
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: status
+        table:
+          schema: likelib
+          name: transactions
+- table:
+    schema: likelib
+    name: transaction_types
+  array_relationships:
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: type
+        table:
+          schema: likelib
+          name: transactions
+- table:
+    schema: likelib
+    name: transactions
+  object_relationships:
+  - name: account
+    using:
+      foreign_key_constraint_on: account_from
+  - name: accountByAccountTo
+    using:
+      foreign_key_constraint_on: account_to
+  - name: block
+    using:
+      foreign_key_constraint_on: block_height
+  - name: transaction_status
+    using:
+      foreign_key_constraint_on: status
+  - name: transaction_type
+    using:
+      foreign_key_constraint_on: type
